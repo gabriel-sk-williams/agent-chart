@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createChart, AreaSeries } from 'lightweight-charts';
-import editedData from '../data/edited.json';
 
-const LightweightChart = () => {
+const LightweightAPI = () => {
     const chartContainerRef = useRef(null);
     const [ priceData, setPriceData ] = useState(false)
 
@@ -22,8 +21,9 @@ const LightweightChart = () => {
     const timeEnd = "1738817626"
     const path = `${baseUrl}${tokenAddress}&address_type=token&type=1H&time_from=${timeStart}&time_to=${timeEnd}`;
 
+    
     useEffect(() => {
-        //const chartSize = {width: 831, height: 410 };
+        // const chartSize = {width: 831, height: 410 };
         console.log(apiKey)
         fetch(path, options)
             .then(res => res.json())
@@ -37,6 +37,7 @@ const LightweightChart = () => {
             .catch(err => console.error(err));
     }, [apiKey]);
     
+
     useEffect(() => {
         if (priceData) {
 
@@ -58,7 +59,7 @@ const LightweightChart = () => {
                 },
                 grid: {
                     vertLines: { visible: false },
-                    horzLines:  { visible: false },
+                    horzLines: { visible: false },
                 },
                 width: 1200,
                 height: 600,
@@ -87,4 +88,4 @@ const LightweightChart = () => {
   return <div ref={chartContainerRef} />;
 };
 
-export default LightweightChart;
+export default LightweightAPI;

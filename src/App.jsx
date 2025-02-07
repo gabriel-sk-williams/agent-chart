@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import TradingViewAdvanced from './components/TradingViewAdvanced.jsx';
-import LightweightChart from './components/LightweightChart.jsx';
+import LightweightAPI from './components/LightweightAPI.jsx';
+import LightweightLocal from './components/LightweightLocal.jsx';
 import './styles/App.css'
 import './styles/index.css'
 import './styles/layout.css'
@@ -10,12 +11,8 @@ function App() {
 
   return (
     <div className="container">
-      <LightweightChart />
-      {/*
-        <div className="view-container">
-        <TradingViewAdvanced />
-      </div>
-      */}
+      {/*<LightweightAPI />*/}
+      <LightweightLocal />
     </div>
   )
 }
