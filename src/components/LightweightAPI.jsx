@@ -49,6 +49,7 @@ const LightweightAPI = () => {
             // Create line series
             const areaSeries = chart.addSeries(AreaSeries, lineStyles);
             areaSeries.setData(priceData)
+            
             chart.timeScale().fitContent();
 
             // Cleanup on component unmount

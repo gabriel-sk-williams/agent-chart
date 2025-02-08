@@ -8,8 +8,7 @@ import './styles/layout.css'
 function App() {
   return (
     <div className="container">
-      <LightweightAPI />
-      {/*<LightweightLocal />*/}
+      <LightweightLocal />
     </div>
   )
 }
