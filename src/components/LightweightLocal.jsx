@@ -5,15 +5,12 @@ import { getUnixRangeAndInterval } from '../data/time.js';
 import { chartOptions, lineStyles } from '../data/settings.js';
 
 
-const LightweightLocal = () => {
+const LightweightLocal = ({range}) => {
     const chartContainerRef = useRef(null);
 
-    const { timeStart, timeEnd, interval } = getUnixRangeAndInterval("1D");
+    const { timeStart, timeEnd, interval } = getUnixRangeAndInterval(range);
     var then = new Date(timeStart * 1000);
     var now = new Date(timeEnd * 1000);
-    console.log(then)
-    console.log(now)
-    console.log("interval", interval)
 
     useEffect(() => {
         // Create the chart instance

@@ -22,9 +22,8 @@ export const chartOptions = {
         horzLines: { visible: false },
     },
     // ChartOptionsBase
-    // figma chart size is = { width: 831, height: 410 };
-    width: 1200,
-    height: 600,
+    width: 1200, // 831 [figma]
+    height: 600, // 410 [figma]
     rightPriceScale: {
         visible: false
     }

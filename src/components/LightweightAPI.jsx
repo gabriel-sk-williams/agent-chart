@@ -3,11 +3,11 @@ import { createChart, AreaSeries } from 'lightweight-charts';
 import { getUnixRangeAndInterval } from '../data/time.js';
 import { chartOptions, lineStyles } from '../data/settings.js';
 
-const LightweightAPI = () => {
+const LightweightAPI = ({baseUrl, tokenAddress, range}) => {
     const chartContainerRef = useRef(null);
     const [ priceData, setPriceData ] = useState(false)
 
-    const apiKey = import.meta.env.VITE_BIRDEYE_API_KEY
+    const apiKey = import.meta.env.VITE_ALLORA_BIRDEYE_API_KEY
     const options = {
         method: 'GET',
         headers: {
@@ -17,10 +17,8 @@ const LightweightAPI = () => {
         }
     };
 
-    const baseUrl = "https://public-api.birdeye.so/defi/history_price?address=";
-    const tokenAddress = "5zy77ie2LVoLaMDy2h4SAvPCo3uc8Zno85YGZDZjpump";
-    const userInput = "1D";
-    const { timeStart, timeEnd, interval } = getUnixRangeAndInterval(userInput)
+    const { timeStart, timeEnd, interval } = getUnixRangeAndInterval(range)
+    console.log(interval)
 
     const path = `${baseUrl}${tokenAddress}&address_type=token&type=${interval}&time_from=${timeStart}&time_to=${timeEnd}`;
 
@@ -33,11 +31,17 @@ const LightweightAPI = () => {
                     value: item.value,
                 }));
                 setPriceData(prices)
+
+                const look = json.data.items.map(item => ({
+                    time: new Date(item.unixTime * 1000),
+                    value: item.value,
+                }));
+                console.log(look.length)
+                console.log(look)
             })
             .catch(err => console.error(err));
-    }, [apiKey]);
+    }, [range]);
     
-
     useEffect(() => {
         if (priceData) {
 
