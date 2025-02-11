@@ -1,3 +1,15 @@
+import { unixSecond, unixMinute, unixHour, unixDay, unixWeek, unixMonth, unixYear } from './time'
+
+/*
+export const unixSecond = (1000)
+export const unixMinute = (unixSecond * 60)
+export const unixHour = (unixMinute * 60)
+export const unixDay = (unixHour * 24)
+export const unixWeek = (unixDay * 7)
+export const unixMonth = (unixDay * 30)
+export const unixYear = (unixDay * 365)
+*/
+
 // Create options using 
 // https://tradingview.github.io/lightweight-charts/docs/api
 export const chartOptions = {
@@ -48,11 +60,21 @@ export const lineStyles = {
 
 // custom formatter for Time Scale
 function customTimeFormatter(time, tickMarkType, locale) {
-    // console.log("formatting:", time) // 1735344000
+    console.log("formatting:", time) // 1735344000
     // console.log(tickMarkType) // 2
     // console.log(locale) // en-US
 
+    var cutoff = Date.now() - (unixDay * 2);
+    console.log(cutoff)
+
     var date = new Date(time * 1000);
+
+    var month = date.toLocaleString('default', { month: 'short' });
+    var day = date.getDate();
+
+    if (date < cutoff) {
+        return `${month} ${day}`
+    }
 
     var hour = date.getHours();
 
