@@ -18,7 +18,6 @@ const LightweightAPI = ({baseUrl, tokenAddress, range}) => {
     };
 
     const { timeStart, timeEnd, interval } = getUnixRangeAndInterval(range)
-    console.log(interval)
 
     const path = `${baseUrl}${tokenAddress}&address_type=token&type=${interval}&time_from=${timeStart}&time_to=${timeEnd}`;
 
@@ -31,13 +30,6 @@ const LightweightAPI = ({baseUrl, tokenAddress, range}) => {
                     value: item.value,
                 }));
                 setPriceData(prices)
-
-                const look = json.data.items.map(item => ({
-                    time: new Date(item.unixTime * 1000),
-                    value: item.value,
-                }));
-                console.log(look.length)
-                console.log(look)
             })
             .catch(err => console.error(err));
     }, [range]);
