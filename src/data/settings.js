@@ -1,15 +1,5 @@
 import { unixSecond, unixMinute, unixHour, unixDay, unixWeek, unixMonth, unixYear } from './time'
 
-/*
-export const unixSecond = (1000)
-export const unixMinute = (unixSecond * 60)
-export const unixHour = (unixMinute * 60)
-export const unixDay = (unixHour * 24)
-export const unixWeek = (unixDay * 7)
-export const unixMonth = (unixDay * 30)
-export const unixYear = (unixDay * 365)
-*/
-
 // Create options using 
 // https://tradingview.github.io/lightweight-charts/docs/api
 export const chartOptions = {
@@ -18,14 +8,14 @@ export const chartOptions = {
         background: { type: 'solid', color: 'transparent'},
         textColor: "#60497F",
         // fontFamily: Inter,
-        fontSize: 24,
+        fontSize: 24, // 12 [figma]
         attributionLogo: false,
     },
     // TimeScaleOptions
     timeScale: {
-        timeVisible: true,
-        tickMarkMaxCharacterLength: 5,
-        allowBoldLabels: true,
+        secondsVisible:false,
+        ticksVisible: true, // barely visible
+        uniformDistribution: true,
         tickMarkFormatter: customTimeFormatter
     },
     // GridOptions
@@ -34,8 +24,10 @@ export const chartOptions = {
         horzLines: { visible: false },
     },
     // ChartOptionsBase
-    width: 1200, // 831 [figma]
-    height: 600, // 410 [figma]
+    width: 1200,    // 831, [figma]
+    height: 600,    // 410, [figma]
+    handleScroll: false,
+    handleScale: false,
     rightPriceScale: {
         visible: false
     }
@@ -51,38 +43,54 @@ export const lineStyles = {
     // SeriesOptionsCommon
     lastValueVisible: false,
     priceLineVisible: false,
-    priceFormat: { 
-        type: 'price', 
-        precision: 5, 
-        minMove: 0.0000001 
-    },
 }
 
 // custom formatter for Time Scale
 function customTimeFormatter(time, tickMarkType, locale) {
-    console.log("formatting:", time) // 1735344000
-    // console.log(tickMarkType) // 2
-    // console.log(locale) // en-US
+    
+    var now = Date.now()
+    var dayCutoff = now - unixDay;
+    var hourCutoff = now - unixHour;
 
-    var cutoff = Date.now() - (unixDay * 2);
-    console.log(cutoff)
+    var today = new Date(now)
+    var currentDate = today.getDate();
 
     var date = new Date(time * 1000);
+    console.log("")
+    console.log(date)
 
     var month = date.toLocaleString('default', { month: 'short' });
     var day = date.getDate();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
 
-    if (date < cutoff) {
-        return `${month} ${day}`
+    // if longer than a day ago, return short date
+    if (date < dayCutoff) {
+        return `${month} ${day}`;
     }
 
-    var hour = date.getHours();
+    // if within the last hour and not on the hour, show hour:minute
+    if (date > hourCutoff && minute !== 0) {
+        if (hour > 12) {
+            return `${hour-12}:${minute}`;
+        } else {
+            return `${hour}:${minute}`;
+        }
+    }
+    
+    // show date at midnight
+    if (currentDate == day && hour == 0) {
+        return `${month} ${day}`;
+    }
 
+    // if between and hour and day ago, show hour and AM/PM
     if (hour > 12) {
         return `${hour-12} PM`
-    } else if (hour < 12) {
+    } else if (hour == 12) {
+        return `${hour} PM`
+    } else if (hour == 0) {
+        return `12 AM`
+    }else {
         return `${hour} AM`
-    } else {
-        return "Dec 27"
     }
 }

@@ -1,39 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createChart, AreaSeries } from 'lightweight-charts';
-import { getUnixRangeAndInterval } from '../data/time.js';
 import { chartOptions, lineStyles } from '../data/settings.js';
 
-const LightweightAPI = ({baseUrl, tokenAddress, range}) => {
+const LightweightAPI = ({priceData}) => {
     const chartContainerRef = useRef(null);
-    const [ priceData, setPriceData ] = useState(false)
 
-    const apiKey = import.meta.env.VITE_ALLORA_BIRDEYE_API_KEY
-    const options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            'x-chain': 'solana',
-            'X-API-KEY': apiKey
-        }
-    };
-
-    const { timeStart, timeEnd, interval } = getUnixRangeAndInterval(range)
-
-    const path = `${baseUrl}${tokenAddress}&address_type=token&type=${interval}&time_from=${timeStart}&time_to=${timeEnd}`;
-
-    useEffect(() => {
-        fetch(path, options)
-            .then(res => res.json())
-            .then(json => {
-                const prices = json.data.items.map(item => ({
-                    time: item.unixTime,
-                    value: item.value,
-                }));
-                setPriceData(prices)
-            })
-            .catch(err => console.error(err));
-    }, [range]);
-    
     useEffect(() => {
         if (priceData) {
 
@@ -47,6 +18,13 @@ const LightweightAPI = ({baseUrl, tokenAddress, range}) => {
             areaSeries.setData(priceData)
             
             chart.timeScale().fitContent();
+
+            // troubleshooting:
+            // const vr = chart.timeScale().getVisibleLogicalRange();
+            // console.log("vlrange", vr);
+            // const width = chart.timeScale().width();
+            // const barSpacing = width / (vr.to - vr.from);
+            // console.log(`bar spacing is ${barSpacing}`);
 
             // Cleanup on component unmount
             return () => {
