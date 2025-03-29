@@ -47,3 +47,23 @@ export function getUnixRangeAndInterval(input) {
     return { timeStart, timeEnd, interval }
 }
 
+export const previewDictionary = {
+    "1W": {
+        interval: "6H",
+        subtrahend: unixWeek,
+    },
+}
+
+export function getPreviewInterval(input) { // 1W
+    var dict = previewDictionary[input];
+    var prevInterval = dict.interval;
+
+    var now = Date.now()
+    var then = now-dict.subtrahend
+
+    var prevStart = Math.round(then / 1000);
+    var prevEnd = Math.round(now / 1000);
+    
+    return { prevStart, prevEnd, prevInterval }
+}
+

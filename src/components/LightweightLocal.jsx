@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { createChart, AreaSeries } from 'lightweight-charts';
 import editedData from '../data/edited.json';
 import { getUnixRangeAndInterval } from '../data/time.js';
-import { chartOptions, lineStyles } from '../data/settings.js';
+import { chartOptions, lineStyles } from '../data/settings_graph.js';
 
 
 const LightweightLocal = ({range}) => {

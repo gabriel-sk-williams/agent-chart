@@ -13,9 +13,10 @@ export const chartOptions = {
     },
     // TimeScaleOptions
     timeScale: {
+        barspacing: 500,
         secondsVisible:false,
         ticksVisible: true, // barely visible
-        uniformDistribution: true,
+        uniformDistribution: false,
         tickMarkFormatter: customTimeFormatter
     },
     // GridOptions

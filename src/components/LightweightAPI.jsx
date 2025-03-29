@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createChart, AreaSeries } from 'lightweight-charts';
-import { chartOptions, lineStyles } from '../data/settings.js';
+import { chartOptions, lineStyles } from '../data/settings_graph.js';
 
 const LightweightAPI = ({priceData}) => {
     const chartContainerRef = useRef(null);
@@ -20,11 +20,12 @@ const LightweightAPI = ({priceData}) => {
             chart.timeScale().fitContent();
 
             // troubleshooting:
-            // const vr = chart.timeScale().getVisibleLogicalRange();
-            // console.log("vlrange", vr);
-            // const width = chart.timeScale().width();
-            // const barSpacing = width / (vr.to - vr.from);
-            // console.log(`bar spacing is ${barSpacing}`);
+            const vr = chart.timeScale().getVisibleLogicalRange();
+            console.log("vlrange", vr);
+            const width = chart.timeScale().width();
+            console.log(`ts width ${width}`);
+            const barSpacing = width / (vr.to - vr.from);
+            console.log(`bar spacing is ${barSpacing}`);
 
             // Cleanup on component unmount
             return () => {
